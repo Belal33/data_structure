@@ -100,6 +100,18 @@ class LinkedList:
         self.length += 1
         return new_node
 
+    def insert_head(self, _data):
+        self.validate_inserted_data(_data)
+        new_node = self.node_class(_data)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head = new_node
+        self.length += 1
+        return new_node
+
     def insert_after(self, _data_to_insert, _data_to_find):
         self.validate_inserted_data(_data_to_insert)
         # search about the node contian _data_to_find return error if not found it
@@ -182,8 +194,8 @@ class LinkedList:
         old_head = self.head
         self.head = old_head.next
 
-        del old_head
         self.length -= 1
+        return old_head
 
     def delete_node(self, _node: SinglyLinkedListNode):
         if self.head is None:
