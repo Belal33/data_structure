@@ -1,14 +1,14 @@
-class LinkedListNode:
+class SinglyLinkedListNode:
     def __init__(self, data):
         self.data = data
-        self.next: LinkedListNode = None
+        self.next: SinglyLinkedListNode = None
 
     def __repr__(self) -> str:
-        return str(f"node_data = {self.data}")
+        return f"<node_data = {self.data}>"
 
 
 class LinkedListIterator:
-    def __init__(self, _node: LinkedListNode):
+    def __init__(self, _node: SinglyLinkedListNode):
         self.current_node = _node
 
     def __next__(self):
@@ -25,12 +25,12 @@ class LinkedListIterator:
 
 class LinkedList:
     iter_class = LinkedListIterator
-    node_class = LinkedListNode
+    node_class = SinglyLinkedListNode
 
     def __init__(self, *args):
 
-        self.head: LinkedList.node_class = None
-        self.tail: LinkedList.node_class = None
+        self.head: self.node_class = None
+        self.tail: self.node_class = None
         self.length = 0
         if len(args):
             print("args:" + str(args))
@@ -48,6 +48,9 @@ class LinkedList:
         for node_data in self:
             linked_list_repr += f"({node_data}) "
         return f"linked_list -{(str(self.length))}-> |{self.head and self.head.data}| {linked_list_repr} |{self.tail and self.tail.data}|"
+
+    def __len__(self):
+        return self.length
 
     @property
     def next_node(self):
@@ -79,7 +82,7 @@ class LinkedList:
 
     def insert_after(self, _data_to_insert, _data_to_find):
         # search about the node contian _data_to_find return error if not found it
-        ref_node: LinkedListNode = self.find_node(_data_to_find)
+        ref_node: SinglyLinkedListNode = self.find_node(_data_to_find)
         if ref_node is None:
             raise ValueError(f"list doesn't contain this value '{_data_to_find}'")
 
@@ -104,7 +107,7 @@ class LinkedList:
         # find previous_node
         # make previous_node.next be the new_node
         # increase the list length
-        ref_node: LinkedListNode = self.find_node(_data_to_find)
+        ref_node: SinglyLinkedListNode = self.find_node(_data_to_find)
         if ref_node is None:
             raise ValueError(f"list doesn't contain this value '{_data_to_find}'")
 
@@ -119,7 +122,7 @@ class LinkedList:
         self.length += 1
         return new_node
 
-    def get_previous_node(self, _node: LinkedListNode):
+    def get_previous_node(self, _node: SinglyLinkedListNode):
         # validate that _node is not None
         # check if the list is empty raise an error
         # check if _node is the head then return None
@@ -160,7 +163,7 @@ class LinkedList:
         del old_head
         self.length -= 1
 
-    def delete_node(self, _node: LinkedListNode):
+    def delete_node(self, _node: SinglyLinkedListNode):
         if self.head is None:
             raise ValueError(f"the linked list is empty")
         if self.head == _node:
