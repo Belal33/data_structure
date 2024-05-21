@@ -27,17 +27,26 @@ class LinkedList:
     iter_class = LinkedListIterator
     node_class = SinglyLinkedListNode
 
-    def __init__(self, *args):
+    def __init__(
+        self,
+        *args,
+        unique_data: bool = False,
+    ):
 
         self.head: self.node_class = None
         self.tail: self.node_class = None
         self.length = 0
+        self._unique_data = unique_data
         if len(args):
             print("args:" + str(args))
             for data in args:
                 self.insert_last(data)
             self.length = len(args)
         self.itr_obj = self.iter_class(self.head)
+
+    @property
+    def unique_data(self):
+        return self._unique_data
 
     def __iter__(self):
         self.itr_obj = self.iter_class(self.head)
@@ -69,7 +78,18 @@ class LinkedList:
             current_node = self.next_node
         return None
 
+    def is_exists(self, _data_to_find):
+        # check if the list is empty
+        if self.head is None:
+            return False
+        return _data_to_find in self
+
+    def validate_inserted_data(self, _data):
+        if self._unique_data and self.is_exists(_data):
+            raise ValueError(f"{_data} already exists in the list")
+
     def insert_last(self, _data):
+        self.validate_inserted_data(_data)
         new_node = self.node_class(_data)
         if self.head is None:
             self.head = new_node
@@ -81,6 +101,7 @@ class LinkedList:
         return new_node
 
     def insert_after(self, _data_to_insert, _data_to_find):
+        self.validate_inserted_data(_data_to_insert)
         # search about the node contian _data_to_find return error if not found it
         ref_node: SinglyLinkedListNode = self.find_node(_data_to_find)
         if ref_node is None:
@@ -107,6 +128,7 @@ class LinkedList:
         # find previous_node
         # make previous_node.next be the new_node
         # increase the list length
+        self.validate_inserted_data(_data_to_insert)
         ref_node: SinglyLinkedListNode = self.find_node(_data_to_find)
         if ref_node is None:
             raise ValueError(f"list doesn't contain this value '{_data_to_find}'")
@@ -178,7 +200,7 @@ class LinkedList:
 def test_linked_list_structure_and_operations():
     passed_test_cases = []
     failed_test_cases = []
-    linked_list = LinkedList()
+    linked_list = LinkedList(unique_data=True)
     # test insert_last
     test_1 = "test insert_last"
     node_1 = linked_list.insert_last(1)
@@ -288,6 +310,20 @@ def test_linked_list_structure_and_operations():
     print(f"{linked_list } = 1 2 ")
     # 1 2
 
+    ###############
+
+    # test unique data
+    test_8 = "test unique data"
+    print(test_8)
+    try:
+        linked_list.insert_last(2)
+    except:
+        passed_test_cases.append(test_8)
+    finally:
+        linked_list.insert_after(3, 2)
+
+    print(f"{linked_list } = 1 2 3 ")
+    # 1 2 3
     return passed_test_cases, failed_test_cases
 
 
