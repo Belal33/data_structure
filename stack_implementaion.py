@@ -17,6 +17,9 @@ class Stack:
     def is_empty(self):
         return self.__data_list.head is None
 
+    def size(self):
+        return len(self.__data_list)
+
     def __repr__(self):
         return self.__data_list.__repr__()
 
@@ -28,9 +31,14 @@ if __name__ == "__main__":
     s.push(5)
     s.push(3)
 
+    print(s.size())
     print(s.pop())
+    print(s.size())
     print(s.pop())
+    print(s.size())
     print(s.is_empty())
     print(s.pop())
+    print(s.size())
     print(s.pop())
+    print(s.size())
     print(s.is_empty())
